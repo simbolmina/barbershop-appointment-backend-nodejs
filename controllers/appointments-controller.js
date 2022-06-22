@@ -8,6 +8,7 @@ let DUMMY_DATA = [
     time: "08:30",
     type: "sac",
     note: " ",
+    creator: "u1",
   },
   {
     id: "a2",
@@ -15,6 +16,7 @@ let DUMMY_DATA = [
     time: "08:30",
     type: "sakal",
     note: " ",
+    creator: "u1",
   },
 ];
 
@@ -30,6 +32,20 @@ exports.getAppointmentById = (req, res, next) => {
     );
   }
   res.json({ appointment });
+};
+
+exports.getAppointmentsByUserId = (req, res, next) => {
+  const userId = req.params.uid;
+
+  const appointments = DUMMY_DATA.filter((user) => user.creator === userId);
+
+  if (!appointments || appointments.length === 0) {
+    return next(
+      new HttpError("Could not find any appointment with provided user id", 404)
+    );
+  }
+
+  res.json({ appointments });
 };
 
 exports.createAppointment = (req, res, next) => {
